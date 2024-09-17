@@ -20,6 +20,11 @@ func Now() Time {
 	return Time(time.Now())
 }
 
+func NowPtr() *Time {
+	t := Time(time.Now())
+	return &t
+}
+
 func ParseLocalLayout(l, val string) (Time, error) {
 	t, err := time.ParseInLocation(l, val, time.Local)
 	if err != nil {
@@ -120,10 +125,6 @@ func EndTimeOfWeek(t Time) Time {
 }
 
 type Time time.Time
-
-func (t Time) Ptr() *Time {
-	return &t
-}
 
 func (t Time) AddDate(years int, months int, days int) Time {
 	ti := time.Time(t).AddDate(years, months, days)
@@ -231,6 +232,29 @@ func (t Time) TimeMillisecond() string {
 	}
 	return t.Format("15:04:05.000")
 }
+func (t Time) Weekday() time.Weekday {
+	return time.Time(t).Weekday()
+}
+
+func (t Time) Day() int {
+	return time.Time(t).Day()
+}
+
+// Hour returns the hour within the day specified by t, in the range [0, 23].
+func (t Time) Hour() int {
+	return time.Time(t).Hour()
+}
+
+// Minute returns the minute offset within the hour specified by t, in the range [0, 59].
+func (t Time) Minute() int {
+	return time.Time(t).Minute()
+}
+
+// Second returns the second offset within the minute specified by t, in the range [0, 59].
+func (t Time) Second() int {
+	return time.Time(t).Second()
+}
+
 func (t Time) RFC3339() string {
 	if reflect.ValueOf(t).IsZero() {
 		return ""
