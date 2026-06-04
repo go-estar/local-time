@@ -177,10 +177,14 @@ func (t *Time) UnmarshalJSON(data []byte) (err error) {
 	}
 	now, err := ParseLocalLayout(`"`+Layout+`"`, string(data))
 	if err != nil {
-		return err
+		v := time.Time{}
+		if err = v.UnmarshalJSON(data);err != nil {
+			return err
+		}
+		now = Time(v)
 	}
 	*t = now
-	return
+	return nil
 }
 
 func (t Time) IsZero() bool {
